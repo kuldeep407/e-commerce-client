@@ -30,7 +30,6 @@ const ShopContextProvider = (props) => {
       
       const url = `${import.meta.env.VITE_APP_BACKEND_URL}/all-products`;
       const response = await axios.get(url, { withCredentials: true });
-
       console.log(response.data);
 
       if (Array.isArray(response.data)) {
