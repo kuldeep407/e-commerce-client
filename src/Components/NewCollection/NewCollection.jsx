@@ -56,7 +56,9 @@ export default function NewCollection() {
               <Link to={`/product/${item.id}`}>
                 <AspectRatio ratio="1" sx={{ minWidth: 150 }}>
                   <img
-                    src={item.image}
+                      src={`${
+                        import.meta.env.VITE_APP_BACKEND_URL
+                      }/images/${item.image.split("/").pop()}`}
                     alt={item.name}
                     onClick={() => window.scrollTo(0, 0)}
                     className="w-full h-auto object-cover rounded-lg"

@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Popular() {
-
-  const [popularProducts, setPopularProducts ] = useState([])
+  const [popularProducts, setPopularProducts] = useState([]);
 
   const fetchPopularProducts = async () => {
     try {
-      const url = `${import.meta.env.VITE_APP_BACKEND_URL}/get-popular-women-category-products`;
+      const url = `${
+        import.meta.env.VITE_APP_BACKEND_URL
+      }/get-popular-women-category-products`;
       const response = await axios.get(url, { withCredentials: true });
 
       console.log(response.data);
@@ -59,7 +60,9 @@ export default function Popular() {
             <Link to={`/product/${item.id}`}>
               <AspectRatio ratio="1" sx={{ minWidth: 150 }}>
                 <img
-                  src={item.image}
+                  src={`${
+                    import.meta.env.VITE_APP_BACKEND_URL
+                  }/images/${item.image.split("/").pop()}`}
                   alt={item.name}
                   onClick={() => window.scrollTo(0, 0)}
                   className="w-full max-w-[300px] h-auto object-cover rounded-lg"

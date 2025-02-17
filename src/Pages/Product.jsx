@@ -15,7 +15,7 @@ export default function Product() {
 
   return (
     <div>
-       <Breadcrums product = {product} />
+       {/* <Breadcrums product = {product} /> */}
        <ProductDisplay product = {product} />
        <DescriptionBox/>
        <RelatedProducts/>

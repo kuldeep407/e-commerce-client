@@ -7,7 +7,7 @@ export default function Item(props) {
       <Link to={`/product/${props.id}`}>
         <img
           onClick={() => window.scrollTo(0, 0)}
-          src={props.image}
+          src={props.image.replace("http://localhost:4000", import.meta.env.VITE_APP_BACKEND_URL)}
           alt={props.name}
           className="w-full h-auto object-cover rounded-lg"
         />

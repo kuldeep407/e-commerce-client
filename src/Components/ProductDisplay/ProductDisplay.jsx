@@ -3,7 +3,7 @@ import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-hot-toast'
+import { toast } from "react-hot-toast";
 
 export default function ProductDisplay(props) {
   const navigate = useNavigate();
@@ -15,22 +15,30 @@ export default function ProductDisplay(props) {
       <div className="flex flex-col sm:flex-row ">
         <div className="flex sm:flex-col gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
           <img
-            src={product.image}
+            src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
+              .split("/")
+              .pop()}`}
             alt="Thumbnail"
             className="w-20 h-24 sm:w-24 sm:h-28 object-cover cursor-pointer hover:scale-105 transition duration-300 "
           />
           <img
-            src={product.image}
+            src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
+              .split("/")
+              .pop()}`}
             alt="Thumbnail"
             className="w-20 h-24 sm:w-24 sm:h-28 object-cover cursor-pointer hover:scale-105 transition duration-300 "
           />
           <img
-            src={product.image}
+            src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
+              .split("/")
+              .pop()}`}
             alt="Thumbnail"
             className="w-20 h-24 sm:w-24 sm:h-28 object-cover cursor-pointer hover:scale-105 transition duration-300 "
           />
           <img
-            src={product.image}
+            src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
+              .split("/")
+              .pop()}`}
             alt="Thumbnail"
             className="w-20 h-24 sm:w-24 sm:h-28 object-cover cursor-pointer hover:scale-105 transition duration-300 "
           />
@@ -38,7 +46,9 @@ export default function ProductDisplay(props) {
 
         <div className="flex justify-center sm:w-full">
           <img
-            src={product.image}
+            src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
+              .split("/")
+              .pop()}`}
             alt="Main Product"
             className="w-full sm:w-[400px] h-[490px] max-w-full transition hover:scale-105 duration-300 rounded-lg"
           />
@@ -108,12 +118,12 @@ export default function ProductDisplay(props) {
 
             if (!authToken) {
               toast.error("Please log in to add items to the cart!");
-              return; 
+              return;
             }
 
             const isAdded = await addToCart(product.id);
             if (isAdded) {
-              navigate("/cart"); 
+              navigate("/cart");
             }
           }}
           className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg"

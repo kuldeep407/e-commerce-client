@@ -3,11 +3,14 @@ import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
 
 export default function CartItems() {
-  const { getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext);
+  const { getTotalCartAmount, all_product, cartItems, removeFromCart } =
+    useContext(ShopContext);
 
   return (
     <div className="p-4 w-full max-w-5xl mx-auto">
-      <h2 className="text-xl font-bold mb-4 text-center md:text-left">Shopping Cart</h2>
+      <h2 className="text-xl font-bold mb-4 text-center md:text-left">
+        Shopping Cart
+      </h2>
 
       <div className="hidden md:grid grid-cols-6 font-semibold border-b pb-2">
         <p>Product</p>
@@ -25,11 +28,20 @@ export default function CartItems() {
               key={product.id}
               className="grid grid-cols-1 md:grid-cols-6 items-center border-b py-4 gap-4 md:gap-0 text-center md:text-left"
             >
-              <img src={product.image} alt="" className="w-16 h-16 object-cover mx-auto md:mx-0" />
+              <img
+                src={product.image.replace(
+                  "http://localhost:4000",
+                  import.meta.env.VITE_APP_BACKEND_URL
+                )}
+                alt=""
+                className="w-16 h-16 object-cover mx-auto md:mx-0"
+              />
               <p className="text-sm">{product.name}</p>
               <p className="font-semibold">${product.new_price}</p>
               <p>{cartItems[product.id]}</p>
-              <p className="font-semibold">${product.new_price * cartItems[product.id]}</p>
+              <p className="font-semibold">
+                ${product.new_price * cartItems[product.id]}
+              </p>
               <img
                 src={remove_icon}
                 alt="Remove"
@@ -41,7 +53,6 @@ export default function CartItems() {
       )}
 
       <div className="flex flex-col md:flex-row w-full mx-auto justify-between mt-10 gap-8">
-
         <div className="flex flex-col w-full md:w-[40%] p-6 bg-white rounded-lg">
           <h1 className="font-semibold text-xl border-b pb-2">Cart Totals</h1>
 
@@ -70,7 +81,9 @@ export default function CartItems() {
         </div>
 
         <div className="w-full md:w-[50%] bg-white p-6 rounded-lg">
-          <p className="text-gray-600 font-medium text-base">If you have a promo code, enter it here:</p>
+          <p className="text-gray-600 font-medium text-base">
+            If you have a promo code, enter it here:
+          </p>
 
           <div className="flex flex-col md:flex-row mt-4 gap-2">
             <input
