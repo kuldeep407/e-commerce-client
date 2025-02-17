@@ -22,7 +22,7 @@ export default function Breadcrumbs({ product }) {
           </a>
           <img src={arrow_icon} alt=">" className="h-4 w-4 opacity-75" />
 
-          <span className="text-base text-[#ff4141] font-semibold truncate">
+          <span className="text-base text-[#ff4141] font-semibold ">
             {product.name}
           </span>
         </div>

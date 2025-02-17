@@ -44,13 +44,13 @@ export default function ProductDisplay(props) {
           />
         </div>
 
-        <div className="flex justify-center sm:w-full">
+        <div className="flex justify-center sm:w-full mt-4 sm:mt-0">
           <img
             src={`${import.meta.env.VITE_APP_BACKEND_URL}/images/${product.image
               .split("/")
               .pop()}`}
             alt="Main Product"
-            className="w-full sm:w-[400px] h-[490px] max-w-full transition hover:scale-105 duration-300 rounded-lg"
+            className="w-full sm:w-[400px] h-[320px] sm:h-[490px] max-w-full transition hover:scale-105 duration-300 rounded-lg"
           />
         </div>
       </div>
