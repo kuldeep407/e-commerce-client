@@ -5,7 +5,7 @@ import Item from "../Item/Item"
 export default function RelatedProducts() {
   return (
     <div className="flex flex-col w-[88%] mx-auto items-center h-auto mt-[60px] mb-[60px] ">
-    <h1 className="text-[#171717] text-4xl font-bold">Related Products</h1>
+    <h1 className="text-[#171717] text-4xl font-semibold">Related Products</h1>
     <hr className="w-[200px] h-[6px] border-none rounded-md bg-[#252525] mt-2" />
 
     <div className="flex flex-wrap justify-center mt-8">
