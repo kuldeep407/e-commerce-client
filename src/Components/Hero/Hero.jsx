@@ -5,8 +5,8 @@ import hero_image from "../Assets/hero_image.png";
 
 export default function Hero() {
   return (
-    <div className="h-screen flex justify-center items-center bg-gradient-to-b from-[#fde1ff] via-[#e1ffea22] to-transparent px-4">
-      <div className="w-full max-w-6xl flex flex-col md:flex-row justify-between items-center mx-auto sm:mt-[80px] xl:mt-0">
+    <div className="h-screen flex justify-center items-center bg-gradient-to-b from-[#fde1ff] via-[rgba(225,255,234,0.13)] to-transparent px-4">
+      <div className="w-full max-w-6xl flex flex-col md:flex-row justify-between items-center mx-auto  -mt-[60px] xl:mt-0">
         
         <div className="flex flex-col justify-center text-center md:text-left gap-6 leading-[1.1]">
           <h2 className="text-[#090909] text-lg sm:text-lg md:text-2xl font-medium">
