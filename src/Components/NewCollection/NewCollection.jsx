@@ -28,11 +28,11 @@ export default function NewCollection() {
   }, []);
 
   return (
-    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] mt-[100px]">
-      <h1 className="text-[#171717] text-xl sm:text-3xl md:text-4xl font-bold text-center">
+    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] mt-[50px] sm:mt-[60px] md:mt-[130px] ">
+      <h1 className="text-[#171717] text-xl sm:text-3xl md:text-4xl font-semibold text-center">
         NEW COLLECTIONS
       </h1>
-      <hr className="w-[100px] sm:w-[150px] md:w-[200px] h-[3px] sm:h-[4px] md:h-[6px] border rounded-md bg-[#252525] mt-3" />
+      <hr className="w-[100px] sm:w-[150px] md:w-[200px] h-[3px] sm:h-[4px] md:h-[5px] border rounded-md bg-[#252525] mt-3" />
 
       {newCollection.length > 0 ? (
         <Box
@@ -46,7 +46,7 @@ export default function NewCollection() {
             },
             "::-webkit-scrollbar": { display: "none" },
           }}
-          className="mt-10 flex"
+          className="mt-5 md:mt-8 flex"
         >
           {newCollection.map((item) => (
             <div

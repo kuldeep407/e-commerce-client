@@ -33,11 +33,11 @@ export default function Popular() {
   }, []);
 
   return (
-    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] mt-[30px]">
-      <h1 className="text-[#171717] text-xl sm:text-3xl md:text-4xl font-bold text-center">
+    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] sm:mt-[160px] md:mt-[80px] lg:mt-[80px] ">
+      <h1 className="text-[#171717] text-xl sm:text-3xl md:text-4xl font-semibold text-center">
         POPULAR IN WOMEN
       </h1>
-      <hr className="w-[100px] sm:w-[150px] md:w-[200px] h-[3px] sm:h-[4px] md:h-[6px] border rounded-md bg-[#252525] mt-3" />
+      <hr className="w-[100px] sm:w-[150px] md:w-[200px] h-[3px] sm:h-[4px] md:h-[5px] border rounded-md bg-[#252525] mt-3" />
 
       <Box
         sx={{
@@ -50,7 +50,7 @@ export default function Popular() {
           },
           "::-webkit-scrollbar": { display: "none" },
         }}
-        className="mt-10"
+        className="mt-4 md:mt-7"
       >
         {popularProducts.map((item) => (
           <div

@@ -3,7 +3,7 @@ import exclusive_image from "../Assets/exclusive_image.png";
 
 export default function Offers() {
   return (
-    <div className="w-[90%] sm:w-[85%] lg:w-[82%] mt-[60px] h-auto sm:h-[60vh] bg-gradient-to-b from-[#fde1ff] via-[#e1ffea22] to-transparent mx-auto rounded-lg p-6 sm:p-10">
+    <div className="w-[90%] sm:w-[85%] lg:w-[82%] -mt-5 md:mt-6 lg:mt-[60px]  h-auto sm:h-[60vh] bg-gradient-to-b from-[#fde1ff] via-[#e1ffea22] to-transparent mx-auto rounded-lg p-6 sm:p-10">
       
       <div className="flex flex-col sm:flex-row justify-between items-center w-full max-w-[780px] mx-auto gap-6 sm:gap-10">
         
