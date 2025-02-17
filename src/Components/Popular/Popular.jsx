@@ -33,7 +33,7 @@ export default function Popular() {
   }, []);
 
   return (
-    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] -mt-10 sm:mt-[160px] md:mt-[80px] lg:mt-[80px] ">
+    <div className="flex flex-col w-[82%] mx-auto items-center min-h-[70vh] -mt-15 sm:mt-[160px] md:mt-[80px] lg:mt-[80px] ">
       <h1 className="text-[#171717] text-xl sm:text-3xl md:text-4xl font-semibold text-center">
         POPULAR IN WOMEN
       </h1>

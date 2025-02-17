@@ -15,9 +15,9 @@ export default function ShopCategory(props) {
           <span className="font-semibold">Showing 1-12</span> out of 36 products
         </p>
 
-        <div className="px-4 py-2 flex items-center gap-2 rounded-full border border-gray-400 cursor-pointer hover:bg-gray-200 transition-all">
+        <div className="px-4 py-2 flex items-center gap-2 rounded-full border border-gray-400 cursor-pointer hover:bg-gray-200 transition-all mt-3 sm:mt-0">
           <span className="text-xs sm:text-sm md:text-base">Sort by</span>
-          <img src={dropdown_icon} alt="Dropdown Icon" className="h-3 w-3 mt-0.5" />
+          <img src={dropdown_icon} alt="Dropdown Icon" className="h-3 w-3 mt-0.5 " />
         </div>
       </div>
 
