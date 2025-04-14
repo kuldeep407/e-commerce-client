@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
@@ -8,7 +8,45 @@ import toast from "react-hot-toast";
 export default function ProductDisplay(props) {
   const navigate = useNavigate();
   const { product } = props;
-  const { addToCart } = useContext(ShopContext);
+  const { addToCart, buyNow } = useContext(ShopContext);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shippingAddress, setShippingAddress] = useState({
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setShippingAddress((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBuyNow = async () => {
+    const authToken = localStorage.getItem("auth-token");
+    if (!authToken) {
+      toast.error("Please log in to proceed with payment!");
+      navigate("/user-auth");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleShippingSubmit = async (e) => {
+    e.preventDefault();
+    const { address, city, postalCode, country } = shippingAddress;
+    if (!address || !city || !postalCode || !country) {
+      toast.error("Please fill in all shipping details!");
+      return;
+    }
+
+    setIsModalOpen(false);
+    const success = await buyNow(product._id, 1, shippingAddress);
+    if (success) {
+      navigate("/orders");
+    }
+  };
 
   return (
     <div className="w-[90%] md:w-[85%] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 p-6 md:p-12 bg-white rounded-2xl">
@@ -81,10 +119,10 @@ export default function ProductDisplay(props) {
         {/* Price Section */}
         <div className="flex items-center gap-4 sm:gap-6">
           <p className="text-gray-400 line-through text-lg sm:text-2xl">
-            ${product.old_price}
+          ₹{product.old_price}
           </p>
           <p className="text-xl sm:text-3xl font-bold text-red-500">
-            ${product.new_price}
+          ₹{product.new_price}
           </p>
         </div>
 
@@ -111,25 +149,35 @@ export default function ProductDisplay(props) {
           </div>
         </div>
 
-        {/* Add to Cart Button */}
-        <button
-          onClick={async () => {
-            const authToken = localStorage.getItem("auth-token");
+        {/* Add to Cart and Buy Button */}
 
-            if (!authToken) {
-              toast.error("Please log in to add items to the cart!");
-              return;
-            }
+        <div className="space-x-4">
+          <button
+            onClick={async () => {
+              const authToken = localStorage.getItem("auth-token");
 
-            const isAdded = await addToCart(product.id);
-            if (isAdded) {
-              navigate("/cart");
-            }
-          }}
-          className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg"
-        >
-          ADD TO CART
-        </button>
+              if (!authToken) {
+                toast.error("Please log in to add items to the cart!");
+                return;
+              }
+
+              const isAdded = await addToCart(product.id);
+              if (isAdded) {
+                navigate("/cart");
+              }
+            }}
+            className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg"
+          >
+            ADD TO CART
+          </button>
+
+          <button
+            onClick={handleBuyNow}
+            className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg"
+          >
+            BUY NOW
+          </button>
+        </div>
 
         {/* Category and Tags */}
         <div className="text-base sm:text-lg text-gray-600 space-y-1">
@@ -142,6 +190,86 @@ export default function ProductDisplay(props) {
           </p>
         </div>
       </div>
+
+      {/* Shipping Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+            <h2 className="text-xl font-semibold mb-4">
+              Enter Shipping Details
+            </h2>
+            <form onSubmit={handleShippingSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={shippingAddress.address}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  value={shippingAddress.city}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Postal Code
+                </label>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={shippingAddress.postalCode}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Country
+                </label>
+                <input
+                  type="text"
+                  name="country"
+                  value={shippingAddress.country}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  required
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#ff4141] text-white rounded-md hover:bg-[#e63a3a]"
+                >
+                  Proceed to Payment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

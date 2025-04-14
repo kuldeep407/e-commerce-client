@@ -27,7 +27,6 @@ const ShopContextProvider = (props) => {
 
   const fetchProducts = async () => {
     try {
-      
       const url = `${import.meta.env.VITE_APP_BACKEND_URL}/all-products`;
       const response = await axios.get(url, { withCredentials: true });
       console.log(response.data);
@@ -163,9 +162,12 @@ const ShopContextProvider = (props) => {
     }
 
     try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/cart`, {
-        headers: { "auth-token": authToken },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/cart`,
+        {
+          headers: { "auth-token": authToken },
+        }
+      );
 
       if (response.data.success) {
         setCartItems(response.data.cartData);
@@ -175,6 +177,135 @@ const ShopContextProvider = (props) => {
         "Error fetching cart items:",
         error.response?.data || error.message
       );
+    }
+  };
+
+  // payment logic start
+  const initiatePayment = async (
+    orderId,
+    razorpayOrderId,
+    razorpayKeyId,
+    totalAmount
+  ) => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        const options = {
+          key: razorpayKeyId,
+          amount: Math.round(totalAmount * 100),
+          currency: "INR",
+          order_id: razorpayOrderId,
+          handler: async function (response) {
+            try {
+              const paymentData = {
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+                orderId,
+              };
+
+              const verifyResponse = await axios.post(
+                `${import.meta.env.VITE_APP_BACKEND_URL}/verify-payment`,
+                paymentData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("auth-token"),
+                  },
+                }
+              );
+
+              if (verifyResponse.data.success) {
+                toast.success("Payment Done!");
+                resolve(verifyResponse.data);
+              } else {
+                toast.error(
+                  verifyResponse.data.message || "Payment verification failed."
+                );
+                console.log(verifyResponse.data.message);
+              }
+            } catch (error) {
+              console.error("Payment verification error:", error);
+              toast.error("Payment verification failed.");
+            }
+          },
+          prefill: {
+            name: "Kuldeep Chahar",
+            email: "kuldeepchahar426@gmail.com",
+            contact: "9694491634",
+          },
+          theme: {
+            color: "#ff4141",
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", function (response) {
+          toast.error("Payment failed. Please try again.");
+          console.log(response.error.description)
+        });
+        rzp.open();
+      };
+      script.onerror = () =>
+        reject(new Error("Failed to load Razorpay script"));
+      document.body.appendChild(script);
+    });
+  };
+
+  const buyNow = async (productId, quantity = 1, shippingAddress) => {
+    const authToken = localStorage.getItem("auth-token");
+    if (!authToken) {
+      toast.error("Please log in to proceed with payment!");
+      navigate("/user-auth");
+      return false;
+    }
+
+    try {
+      const products = [{ productId, quantity }];
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/create-order`,
+        { products, shippingAddress },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": authToken,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const { order, razorpayOrderId, razorpayKeyId } = response.data;
+        await initiatePayment(
+          order._id,
+          razorpayOrderId,
+          razorpayKeyId,
+          order.totalAmount
+        );
+        return true;
+      } else {
+        if (response.data.logout) {
+          localStorage.removeItem("auth-token");
+          toast.error("Session expired. Please log in again.");
+          navigate("/user-auth");
+        } else {
+          toast.error(response.data.message || "Failed to create order.");
+        }
+        return false;
+      }
+    } catch (error) {
+      console.error(
+        "Error creating order:",
+        error.response?.data || error.message
+      );
+      if (error.response?.data?.logout) {
+        localStorage.removeItem("auth-token");
+        toast.error("Session expired. Please log in again.");
+        navigate("/user-auth");
+      } else {
+        toast.error(error.response?.data?.message || "Failed to create order.");
+      }
+      return false;
     }
   };
 
@@ -200,6 +331,7 @@ const ShopContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     getTotalCartItems,
+    buyNow,
   };
 
   return (

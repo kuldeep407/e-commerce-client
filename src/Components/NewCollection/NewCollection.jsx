@@ -72,10 +72,10 @@ export default function NewCollection() {
 
               <div className="flex gap-4 mt-1 items-center">
                 <div className="text-[#374151] pl-2 font-bold text-lg sm:text-xl md:text-base">
-                  ${item.new_price}
+                ₹{item.new_price}
                 </div>
                 <div className="text-[#8c8c8c] text-lg sm:text-xl md:text-base font-semibold line-through">
-                  ${item.old_price}
+                ₹{item.old_price}
                 </div>
               </div>
             </div>

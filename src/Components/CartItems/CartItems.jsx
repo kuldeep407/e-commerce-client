@@ -1,17 +1,25 @@
 import React, { useContext } from "react";
 import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
+import { useNavigate } from "react-router-dom";
 
 export default function CartItems() {
   const { getTotalCartAmount, all_product, cartItems, removeFromCart } =
     useContext(ShopContext);
 
+  const navigate = useNavigate();
+
   return (
-    <div className="p-4 w-full max-w-5xl mx-auto">
+    <div className="p-4 w-full max-w-5xl mx-auto mt-15">
+      <button
+        onClick={() => navigate("/orders")}
+        className="absolute top-20 right-8 px-5 py-2.5 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 rounded-lg"
+      >
+        My Orders
+      </button>{" "}
       <h2 className="text-xl font-bold mb-4 text-center md:text-left">
         Shopping Cart
       </h2>
-
       <div className="hidden md:grid grid-cols-6 font-semibold border-b pb-2">
         <p>Product</p>
         <p>Title</p>
@@ -20,7 +28,6 @@ export default function CartItems() {
         <p>Total</p>
         <p>Remove</p>
       </div>
-
       {all_product.map(
         (product) =>
           cartItems[product.id] > 0 && (
@@ -37,10 +44,10 @@ export default function CartItems() {
                 className="w-16 h-16 object-cover mx-auto md:mx-0"
               />
               <p className="text-sm">{product.name}</p>
-              <p className="font-semibold">${product.new_price}</p>
+              <p className="font-semibold">₹{product.new_price}</p>
               <p>{cartItems[product.id]}</p>
               <p className="font-semibold">
-                ${product.new_price * cartItems[product.id]}
+                ₹{product.new_price * cartItems[product.id]}
               </p>
               <img
                 src={remove_icon}
@@ -51,7 +58,6 @@ export default function CartItems() {
             </div>
           )
       )}
-
       <div className="flex flex-col md:flex-row w-full mx-auto justify-between mt-10 gap-8">
         <div className="flex flex-col w-full md:w-[40%] p-6 bg-white rounded-lg">
           <h1 className="font-semibold text-xl border-b pb-2">Cart Totals</h1>
