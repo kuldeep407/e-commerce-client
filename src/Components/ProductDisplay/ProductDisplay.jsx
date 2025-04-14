@@ -151,7 +151,7 @@ export default function ProductDisplay(props) {
 
         {/* Add to Cart and Buy Button */}
 
-        <div className="space-x-4">
+        <div className="space-x-4 ">
           <button
             onClick={async () => {
               const authToken = localStorage.getItem("auth-token");
@@ -166,7 +166,7 @@ export default function ProductDisplay(props) {
                 navigate("/cart");
               }
             }}
-            className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg"
+            className="px-6 py-3 bg-[#ff4141] text-white font-medium text-lg hover:bg-[#e63a3a] transition duration-300 transform hover:scale-105 w-full sm:w-auto rounded-lg mb-4 lg:mb-0"
           >
             ADD TO CART
           </button>
