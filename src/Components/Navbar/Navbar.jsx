@@ -8,12 +8,18 @@ import cart_icon from "../Assets/cart_icon.png";
 export default function Navbar() {
   const [menu, setMenu] = useState("shop");
   const [isOpen, setIsOpen] = useState(false);
-  const { getTotalCartItems } = useContext(ShopContext);
+  // const { getTotalCartItems } = useContext(ShopContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("auth-token")
   );
+
+  const { cartItems, setCartItems } = useContext(ShopContext);
+
+  const getTotalCartItems = () => {
+    return Object.values(cartItems).reduce((sum, val) => sum + val, 0);
+  };
 
   const checkAuth = () => {
     setIsAuthenticated(!!localStorage.getItem("auth-token"));
@@ -30,6 +36,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("auth-token");
+    setCartItems({});
     checkAuth();
     navigate("/user-auth");
   };
@@ -74,16 +81,20 @@ export default function Navbar() {
             </NavLink>
           )}
 
-          <NavLink to="/cart" className="relative">
-            <img
-              src={cart_icon}
-              alt="Cart"
-              className="w-6 h-6 cursor-pointer"
-            />
-            <div className="absolute -top-2 -right-3 w-[20px] h-[20px] flex justify-center items-center rounded-full text-sm bg-red-600 text-white">
-              {getTotalCartItems()}
-            </div>
-          </NavLink>
+          {isAuthenticated ? (
+            <NavLink to="/cart" className="relative">
+              <img
+                src={cart_icon}
+                alt="Cart"
+                className="w-6 h-6 cursor-pointer"
+              />
+              <div className="absolute -top-2 -right-3 w-[20px] h-[20px] flex justify-center items-center rounded-full text-sm bg-red-600 text-white">
+                {getTotalCartItems()}
+              </div>
+            </NavLink>
+          ) : (
+            ""
+          )}
 
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}

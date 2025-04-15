@@ -163,20 +163,23 @@ const ShopContextProvider = (props) => {
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/cart`,
+        `${import.meta.env.VITE_APP_BACKEND_URL}/get-all-cart-items`,
         {
           headers: { "auth-token": authToken },
         }
       );
 
-      if (response.data.success) {
+      if (response.data.success && response.data.cartData) {
         setCartItems(response.data.cartData);
+      } else {
+        setCartItems({});
       }
     } catch (error) {
       console.error(
         "Error fetching cart items:",
         error.response?.data || error.message
       );
+      setCartItems({});
     }
   };
 
@@ -243,7 +246,7 @@ const ShopContextProvider = (props) => {
         const rzp = new window.Razorpay(options);
         rzp.on("payment.failed", function (response) {
           toast.error("Payment failed. Please try again.");
-          console.log(response.error.description)
+          console.log(response.error.description);
         });
         rzp.open();
       };
@@ -314,23 +317,12 @@ const ShopContextProvider = (props) => {
     fetchCartItems();
   }, []);
 
-  const getTotalCartItems = () => {
-    let totalItem = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        totalItem += cartItems[item];
-      }
-    }
-    return totalItem;
-  };
-
   const contextValue = {
     all_product,
     cartItems,
     addToCart,
     removeFromCart,
     getTotalCartAmount,
-    getTotalCartItems,
     buyNow,
   };
 
